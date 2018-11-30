@@ -8,7 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -100,11 +102,11 @@ public class LancamentoAtividadeResourceTest {
 		
 		LancamentoAtividade obj = new LancamentoAtividade(null, 50, date1, date2, aluno, atividade);
 		
-		System.out.println("marafelli");
+		List<LancamentoAtividade> atividades = new ArrayList<>();
 		
-		System.out.println(mapper.writeValueAsString(obj));
+		atividades.add(obj);
 		
-		System.out.println("marafelli");
+		aluno.setAtividades(atividades);
 		
 		this.mvc.perform(post(url)
 				.content(mapper.writeValueAsString(obj))

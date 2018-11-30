@@ -2,12 +2,15 @@ package br.edu.iftm.atividadeComplementar.domains;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Aluno {
@@ -20,7 +23,9 @@ public class Aluno {
 	@Size(min=3, message="Nome precisa ter pelo menos 3 caracteres")
 	private String nome;
 	
-	@OneToMany(fetch=FetchType.LAZY)
+	@JsonIgnore
+//	@OneToMany(fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<LancamentoAtividade> atividades;
 
 	public Aluno(Long ra, String nome) {
