@@ -20,7 +20,7 @@ public class Aluno {
 	@Size(min=3, message="Nome precisa ter pelo menos 3 caracteres")
 	private String nome;
 	
-	@OneToMany(fetch=FetchType.EAGER)
+	@OneToMany(fetch=FetchType.LAZY)
 	private List<LancamentoAtividade> atividades;
 
 	public Aluno(Long ra, String nome) {

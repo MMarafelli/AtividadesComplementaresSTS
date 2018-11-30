@@ -3,8 +3,12 @@ package br.edu.iftm.atividadeComplementar.controllers;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -13,10 +17,18 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.edu.iftm.atividadeComplementar.domains.Aluno;
+import br.edu.iftm.atividadeComplementar.domains.Atividade;
+import br.edu.iftm.atividadeComplementar.domains.LancamentoAtividade;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -72,33 +84,59 @@ public class LancamentoAtividadeResourceTest {
 				.andExpect(content().string(containsString("")));
 	}
 
-//	@Test
-//	public void teste05Post() throws Exception {
-//		String url = "/atividades/";
-//		
-//		LancamentoAtividade obj = new LancamentoAtividade(null, 50, data1, data2, aluno, atividade);
-//		
-//		this.mvc.perform(post(url)
-//				.content(mapper.writeValueAsString(obj))
-//				.contentType(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isCreated()).andExpect(content().string("")).andDo(MockMvcResultHandlers.print());
-//	}
-//
-//	@Test
-//	public void teste05PostIncompletoNome() throws Exception {
-//		String url = "/atividades/";
-//		
-//		ObjectMapper mapper = new ObjectMapper();
-//		Atividade obj = new Atividade(null, null, 1, 150, 50);
-//
-//		this.mvc.perform(post(url)
-////	Jackson		.content("{\"maximoAtividadesSemestre\":1,\"percentualCargaHoraria\":150,\"percentualPorAtividade\":50}")
-//				.content(mapper.writeValueAsString(obj))
-//				.contentType(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isBadRequest())
-//				.andDo(MockMvcResultHandlers.print());
-//	}
-//	
+	@Test
+	public void teste05Post() throws Exception {
+		String url = "/atividades/";
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date   date1       = format.parse ( "2018-06-18" ); 
+		Date   date2       = format.parse ( "2018-12-18" );
+		
+		Aluno aluno = new Aluno(11113L,"breno");
+		
+		Atividade atividade = new Atividade("Disciplinas Extracurriculares", 2L, 1, 50, 40);
+		
+		LancamentoAtividade obj = new LancamentoAtividade(null, 50, date1, date2, aluno, atividade);
+		
+		System.out.println("marafelli");
+		
+		System.out.println(mapper.writeValueAsString(obj));
+		
+		System.out.println("marafelli");
+		
+		this.mvc.perform(post(url)
+				.content(mapper.writeValueAsString(obj))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated())
+				.andExpect(content().string(""))
+				.andDo(MockMvcResultHandlers.print());
+	}
+
+	@Test
+	public void teste05PostIncompletoQuantidadeHoras() throws Exception {
+		String url = "/atividades/";
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date   date1       = format.parse ( "2018-06-18" ); 
+		Date   date2       = format.parse ( "2018-12-18" );
+		
+		Aluno aluno = new Aluno(11113L,"breno");
+		
+		Atividade atividade = new Atividade("Disciplinas Extracurriculares", 2L, 1, 50, 40);
+		
+		LancamentoAtividade obj = new LancamentoAtividade(null, null, date1, date2, aluno, atividade);
+
+		this.mvc.perform(post(url)
+				.content(mapper.writeValueAsString(obj))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest())
+				.andDo(MockMvcResultHandlers.print());
+	}
+	
 //	public void teste05PostIncompletoCargaHoraria() throws Exception {
 //		String url = "/atividades/";
 //		
