@@ -131,7 +131,7 @@ public class LancamentoAtividadeResourceTest {
 		Atividade atividade = new Atividade("Disciplinas Extracurriculares", 2L, 1, 50, 40);
 		
 		LancamentoAtividade obj = new LancamentoAtividade(null, null, date1, date2, aluno, atividade);
-
+		
 		this.mvc.perform(post(url)
 				.content(mapper.writeValueAsString(obj))
 				.contentType(MediaType.APPLICATION_JSON))
